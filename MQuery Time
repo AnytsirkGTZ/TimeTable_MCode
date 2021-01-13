@@ -6,6 +6,8 @@ let
     #"Inserted Hour" = Table.AddColumn(#"Changed Type", "Hour", each Time.Hour([Time]), Int64.Type),
     #"Inserted Minute" = Table.AddColumn(#"Inserted Hour", "Minute", each Time.Minute([Time]), Int64.Type),
     #"Inserted Second" = Table.AddColumn(#"Inserted Minute", "Second", each Time.Second([Time]), type number),
-    #"Added Conditional Column" = Table.AddColumn(#"Inserted Second", "AM/PM", each if [Hour] < 12 then "AM" else "PM",type text)
+    #"Added Conditional Column" = Table.AddColumn(#"Inserted Second", "AM/PM", each if [Hour] < 12 then "AM" else "PM",type text),
+    #"Inserted Time" = Table.AddColumn(#"Added Conditional Column", "TimeKey", each DateTime.Time([Time]), type time),
+    #"Changed Type1" = Table.TransformColumnTypes(#"Inserted Time",{{"TimeKey", type number}})
 in
-    #"Added Conditional Column"
+    #"Changed Type1"
